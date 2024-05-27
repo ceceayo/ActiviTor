@@ -45,10 +45,13 @@ android {
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "/META-INF/INDEX.LIST"
+            excludes += "/META-INF/io.netty.versions.properties"
         }
     }
-}
 
+}
+val ktor_version = "1.6.4"
 dependencies {
 
     implementation(libs.androidx.core.ktx)
@@ -66,4 +69,8 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    implementation("io.ktor:ktor-server-netty:$ktor_version")
+    implementation("io.ktor:ktor-server-core:$ktor_version")
+    implementation("io.ktor:ktor-gson:$ktor_version")
 }

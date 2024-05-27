@@ -1,0 +1,2 @@
+Ktor docs: https://ktor.io/
+ktor in android background: https://medium.com/@jolam168/how-to-run-an-http-server-in-an-android-app-with-ktor-a-step-by-step-guide-7b26f2d62068

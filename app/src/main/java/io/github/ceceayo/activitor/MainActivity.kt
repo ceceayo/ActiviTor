@@ -13,11 +13,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import io.github.ceceayo.activitor.ui.theme.ActiviTorTheme
+import io.ktor.application.Application
+import io.ktor.server.engine.*
+import io.ktor.server.netty.*
+
 
 class MainActivity : ComponentActivity() {
+    private lateinit var server: NettyApplicationEngine
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        //enableEdgeToEdge()
         setContent {
             ActiviTorTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { _ ->
@@ -29,6 +34,16 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+        startServer()
+    }
+    private fun startServer() {
+        server = embeddedServer(Netty, port = 8080, module = Application::module)
+        server.start()
+    }
+
+    override fun onDestroy() {
+        server.stop(0, 0)
+        super.onDestroy()
     }
 }
 
