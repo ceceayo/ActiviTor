@@ -1,20 +1,19 @@
 package io.github.ceceayo.activitor
 
-import io.ktor.application.*
-import io.ktor.features.*
-import io.ktor.gson.*
-import io.ktor.routing.*
-import io.ktor.http.*
-import io.ktor.response.*
 
-fun Application.module() {
-    install(ContentNegotiation) {
-        gson()
-    }
+//import io.ktor.application.*
 
-    routing {
-        get("/api/data") {
-            call.respond(mapOf("message" to "Hello, world!"))
+//import io.ktor.routing.routing
+//import io.ktor.server.engine.*
+//import io.ktor.server.netty.*
+
+fun startServer() {
+    /*embeddedServer(Netty, port=8080) {
+        routing {
+            get ("/") {
+//                call.respondText("Hello World")
+            }
         }
-    }
+    }*/
+    println("startin' server")
 }

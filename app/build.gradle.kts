@@ -51,7 +51,7 @@ android {
     }
 
 }
-val ktor_version = "1.6.4"
+val ktor_version = "2.3.11"
 dependencies {
 
     implementation(libs.androidx.core.ktx)
@@ -62,6 +62,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.lifecycle.service)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
