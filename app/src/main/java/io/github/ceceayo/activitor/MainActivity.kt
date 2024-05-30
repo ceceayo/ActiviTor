@@ -19,9 +19,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import io.github.ceceayo.activitor.ui.theme.ActiviTorTheme
-import io.ktor.application.Application
-import io.ktor.server.engine.*
-import io.ktor.server.netty.*
 
 
 class MainActivity : ComponentActivity() {
