@@ -7,16 +7,21 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.os.Bundle
 import android.os.IBinder
 import androidx.compose.runtime.Composable
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
+import io.ktor.server.netty.NettyApplicationEngine
 import java.util.*
 
 public class ServerService : Service() {
 
     private val channelId = "my_channel_id"
     private val channelName = "My Channel"
+
+    private lateinit var server: NettyApplicationEngine;
 
     override fun onCreate() {
         println("onCreate")
@@ -43,6 +48,15 @@ public class ServerService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         println("onStartCommand")
+
+        if (intent?.hasExtra("user") != true) {
+            stopSelf()
+            return START_NOT_STICKY
+        }
+        if (!intent.hasExtra("host")) {
+            stopSelf()
+            return START_NOT_STICKY
+        }
         val notification: Notification = NotificationCompat.Builder(this, channelId)
             .setContentTitle("Foreground Service")
             .setContentText("Running...")
@@ -50,7 +64,11 @@ public class ServerService : Service() {
             .build()
         startForeground(NOTIFICATION_ID, notification)
         // Your service logic here
-        startServer()
+        val user = intent.getStringExtra("user")
+        val host = intent.getStringExtra("host")
+
+        server = startServer(user!!, host!!)
+        server.start()
         return START_STICKY
     }
 
@@ -66,7 +84,8 @@ public class ServerService : Service() {
 
 
 
-public fun startServerService(context: Context) {
+public fun startServerService(context: Context, config: appConfig) {
     val serviceIntent = Intent(context, ServerService::class.java)
+    serviceIntent.putExtras(bundleOf("user" to config.username, "host" to config.hostname))
     ContextCompat.startForegroundService(context, serviceIntent)
 }

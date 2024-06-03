@@ -75,5 +75,8 @@ dependencies {
     implementation(libs.ktor.server.core)
     implementation(libs.ktor.server.content.negotiation)
     implementation(libs.ktor.gson)
+    implementation(libs.ktor.call.logging)
+
+    implementation("org.glassfish:jakarta.json:2.0.1")
 
 }
