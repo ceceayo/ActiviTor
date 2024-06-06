@@ -17,7 +17,8 @@ fun startServer(user: String, host: String): NettyApplicationEngine {
         install(CallLogging)
         routing {
             get ("/") {
-                call.respondText("Hello World")
+
+                call.respondText("hello world")
             }
             get ("/.well-known/webfinger") {
                 println(call.request)

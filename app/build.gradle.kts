@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    id("com.google.devtools.ksp")
+    id("androidx.room")
 }
 
 android {
@@ -49,10 +51,19 @@ android {
             excludes += "/META-INF/io.netty.versions.properties"
         }
     }
+    room {
+        schemaDirectory("$projectDir/schemas")
+    }
+
 
 }
 val ktor_version = "2.3.11"
+val room_version = "2.6.1"
+
 dependencies {
+    implementation("androidx.room:room-runtime:$room_version")
+    annotationProcessor("androidx.room:room-compiler:$room_version")
+
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -78,5 +89,9 @@ dependencies {
     implementation(libs.ktor.call.logging)
 
     implementation("org.glassfish:jakarta.json:2.0.1")
+
+    implementation("androidx.room:room-runtime:$room_version")
+    annotationProcessor("androidx.room:room-compiler:$room_version")
+
 
 }
