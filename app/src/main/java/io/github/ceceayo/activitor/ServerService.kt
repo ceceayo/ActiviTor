@@ -11,7 +11,6 @@ import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
-import androidx.room.Room
 import io.ktor.server.netty.NettyApplicationEngine
 
 public class ServerService : Service() {
@@ -65,7 +64,9 @@ public class ServerService : Service() {
         val user = intent.getStringExtra("user")
         val host = intent.getStringExtra("host")
 
-        server = startServer(user!!, host!!)
+        val db = AppDatabase.getInstance(this)
+
+        server = startServer(user!!, host!!, db)
         server.start()
         return START_STICKY
     }
