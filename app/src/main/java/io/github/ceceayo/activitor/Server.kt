@@ -89,6 +89,12 @@ fun startServer(user: String, host: String, db: AppDatabase): NettyApplicationEn
                     ContentType.parse("application/activity+json")
                 )
             }
+            post ("/user/0/inbox") {
+                println("Willkommen zum inbox!!!!!1!!!11!!!!!!")
+                val params = call.request.queryParameters
+                if (!params.contains("actor")) {call.respondText("WTF"); return@post}
+                call.respondText ("OK (rammstein reference)")
+            }
         }
     }
 
