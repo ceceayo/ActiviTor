@@ -15,8 +15,11 @@ import jakarta.json.Json
 import jakarta.json.JsonObject
 import jakarta.json.JsonObjectBuilder
 import org.json.JSONObject
+import java.io.ByteArrayInputStream
+import java.io.InputStream
 import java.io.InputStreamReader
 import java.io.Reader
+import java.nio.charset.Charset
 
 fun startServer(user: String, host: String, db: AppDatabase): NettyApplicationEngine {
     return embeddedServer(Netty, port=8080) {
@@ -28,7 +31,7 @@ fun startServer(user: String, host: String, db: AppDatabase): NettyApplicationEn
             }
             get ("/test/insert") {
                 println("/test/insert")
-                db.userDao().createPost("{\"type\":\"Create\"}")
+                db.userDao().createPost("{\"type\": \"Create\"}")
                 call.respondText("ok (rammstein reference)")
             }
             get ("/.well-known/webfinger") {
@@ -40,21 +43,47 @@ fun startServer(user: String, host: String, db: AppDatabase): NettyApplicationEn
             }
 
             get("/user/0/outbox") {
+                println("outbox")
                 val r = db.userDao().getAll().filter {
-                    JSONObject(it.content).has("type") && JSONObject(it.content).get("type") == "Create"
+                    println("filter ${it.id}")
+                    val r1 = JSONObject(it.content)
+                    println(r1.toString())
+                    r1.has("type") && r1.get("type") == "Create"
                 }
                 val items = Json.createArrayBuilder()
-                r.forEach {
+                r.forEach { it1 ->
+                    println("foreach ${it1.id} / ${it1.content}")
                     val x = Json.createObjectBuilder()
-                    Json.create
+                    println("1")
+                    val y = Json.createReader(ByteArrayInputStream(it1.content.toByteArray(Charsets.UTF_8)))
+                    println("2")
+                    val readY = y.readObject()
+                    if (readY.getString("type").toString() == "Create") {
+                        println("4 / ${readY.toString()}")
+                        readY.forEach { it2 ->
+                            println("4 ${it2.key}=${it2.value}")
+                            x.add(it2.key, it2.value)
+                        }
+
+                        x.add("id", "/user/0/posts/${it1.id}")
+                        x.add("actor", "$host/user/0")
+                        x.add("published", it1.created_at)
+                        x.add("to", Json.createArrayBuilder()
+                            .add("https://www.w3.org/ns/activitystreams#Public"))
+                        println("5 ${x.toString()}")
+                        items.add(x)
+                        println("6 ${items.toString()}")
+                    } else println("3/2")
+                    println("7")
                 }
+                println(items.toString())
                 call.respondText(
                 Json.createObjectBuilder()
                     .add("@context","https://www.w3.org/ns/activitystreams")
                     .add("id", "$host/user/0/outbox")
                     .add("type", "OrderedCollection")
                     .add("totalItems", r.size)
-                    .add("orderedItems", Json.createArrayBuilder())
+                    .add("orderedItems", items)
                     .build()
                     .toString(),
                     ContentType.parse("application/activity+json")
