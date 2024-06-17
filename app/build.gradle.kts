@@ -94,4 +94,6 @@ dependencies {
     annotationProcessor("androidx.room:room-compiler:$room_version")
 
     ksp("androidx.room:room-compiler:$room_version")
+
+    implementation("info.guardianproject.netcipher:netcipher:2.1.0")
 }
