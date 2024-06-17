@@ -55,6 +55,10 @@ android {
         schemaDirectory("$projectDir/schemas")
     }
 
+    lint {
+        warning += "InvalidPackage"
+    }
+
 
 }
 val ktor_version = "2.3.11"
@@ -94,6 +98,6 @@ dependencies {
     annotationProcessor("androidx.room:room-compiler:$room_version")
 
     ksp("androidx.room:room-compiler:$room_version")
-
-    implementation("info.guardianproject.netcipher:netcipher:2.1.0")
+    val netciferver="2.2.0-alpha"
+    implementation("info.guardianproject.netcipher:netcipher:$netciferver")
 }

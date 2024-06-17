@@ -12,16 +12,10 @@ import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import io.ktor.server.plugins.callloging.CallLogging
 import jakarta.json.Json
-import jakarta.json.JsonObject
-import jakarta.json.JsonObjectBuilder
 import org.json.JSONObject
 import java.io.ByteArrayInputStream
-import java.io.InputStream
-import java.io.InputStreamReader
-import java.io.Reader
-import java.nio.charset.Charset
 
-fun startServer(user: String, host: String, db: AppDatabase): NettyApplicationEngine {
+fun startServer(user: String, host: String, db: AppDatabase, serverService: ServerService): NettyApplicationEngine {
     return embeddedServer(Netty, port=8080) {
         install(CallLogging)
         routing {
