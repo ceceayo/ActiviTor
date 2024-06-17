@@ -11,6 +11,8 @@ import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
+import info.guardianproject.netcipher.client.StrongConnectionBuilder
+import info.guardianproject.netcipher.proxy.OrbotHelper
 import io.ktor.server.netty.NettyApplicationEngine
 
 public class ServerService : Service() {
@@ -65,6 +67,16 @@ public class ServerService : Service() {
         val host = intent.getStringExtra("host")
 
         val db = AppDatabase.getInstance(this)
+
+        OrbotHelper.get(this).init();
+
+        if (!OrbotHelper.get(this).isInstalled) {
+            println("no orbot WTF")
+        }
+
+        val con = StrongConnectionBuilder.forMaxSecurity(this).withTorValidation()
+
+
 
         server = startServer(user!!, host!!, db)
         server.start()
