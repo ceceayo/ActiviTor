@@ -72,10 +72,15 @@ public class ServerService : Service() {
         if (!OrbotHelper.get(this).isInstalled) {
             println("no orbot WTF")
         }
+        try {
 
-
-        server = startServer(user!!, host!!, db, this)
-        server.start()
+            fetchActor(this, "a")
+            server = startServer(user!!, host!!, db, this)
+            server.start()
+        } catch (e: Throwable) {
+            println("error")
+            println(e.toString())
+        }
         return START_STICKY
     }
 
