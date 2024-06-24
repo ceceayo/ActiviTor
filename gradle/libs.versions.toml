@@ -32,6 +32,9 @@ ktor-gson = { module = "io.ktor:ktor-serialization-gson", version.ref = "ktor" }
 ktor-server-core = { module = "io.ktor:ktor-server-core", version.ref = "ktor" }
 ktor-server-netty = { module = "io.ktor:ktor-server-netty", version.ref = "ktor" }
 ktor-call-logging = { module = "io.ktor:ktor-server-call-logging", version.ref="ktor" }
+ktor-client = { module = "io.ktor:ktor-client-core", version.ref="ktor" }
+ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref="ktor" }
+ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

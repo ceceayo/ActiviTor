@@ -12,7 +12,15 @@ import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import info.guardianproject.netcipher.proxy.OrbotHelper
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.ProxyBuilder
+import io.ktor.client.engine.http
+import io.ktor.client.engine.okhttp.OkHttp
+import io.ktor.client.request.request
+import io.ktor.client.statement.HttpResponse
+import io.ktor.client.statement.bodyAsText
 import io.ktor.server.netty.NettyApplicationEngine
+import kotlinx.coroutines.runBlocking
 
 public class ServerService : Service() {
 
@@ -67,7 +75,28 @@ public class ServerService : Service() {
 
         val db = AppDatabase.getInstance(this)
 
-        OrbotHelper.get(this).init();
+        var oh = OrbotHelper.get(this)
+        oh.init()
+        try {
+
+            Thread {
+                println("aaa")
+                lateinit var client: HttpClient
+                client = HttpClient(OkHttp) {
+                    engine {
+                        proxy = ProxyBuilder.http("http://localhost:8118/")
+                    }
+                }
+
+                runBlocking {
+                    val response: HttpResponse = client.request("https://4.myip.is/")
+                    println(response.bodyAsText())
+                }
+            }.start()
+
+        } catch (e: Throwable) {
+            println(e.toString())
+        }
 
         if (!OrbotHelper.get(this).isInstalled) {
             println("no orbot WTF")
